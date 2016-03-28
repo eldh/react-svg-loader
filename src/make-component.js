@@ -1,11 +1,7 @@
 export default function(svg) {
   return `
-import React from 'react';
-export default class extends React.Component {
-  render() {
-    return ${ svg.replace(/^<svg/, "<svg { ...this.props } ") };
-  }
+export default (props) => {
+  return ${ svg.replace(/^<svg/, "<svg { ...props } ") };
 }
 `;
-
 }
