@@ -1,7 +1,6 @@
 import xml2js from 'xml2js';
 import builder from './build-xml';
 import filter from './deep-filter';
-import {svgTags} from './react-svg-elements';
 import makeComponent from './make-component';
 import {styleAttrToJsx, convertRootToProps, hyphenToCamel} from './parsers';
 
@@ -10,9 +9,9 @@ export default function(content) {
   this.cacheable && this.cacheable(true);
   this.addDependency(this.resourcePath);
 
-  let callback = this.async();
+  const callback = this.async();
 
-  let parser = new xml2js.Parser({
+  const parser = new xml2js.Parser({
     normalize: true,
     normalizeTags: true,
     explicitArray: true,
@@ -23,11 +22,8 @@ export default function(content) {
   parser.addListener('error', err => callback(err));
 
   parser.addListener('end', function(result) {
-    let allowedTags = svgTags.concat(['$', '$$', '#name']);
-    let filtered = filter(result, function(value, key, parent, parentKey) {
+    const filtered = filter(result, function(value, key, parent, parentKey) {
       if ('number' === typeof key) {
-        if (parentKey === '$$')
-          return allowedTags.indexOf(value['#name']) > -1;
         return true;
       }
       if (parentKey === '$') {
@@ -37,7 +33,7 @@ export default function(content) {
         if (key.indexOf('-') > -1) return hyphenToCamel(key);
         return true;
       }
-      return allowedTags.indexOf(key) > -1;
+      return true;
     });
 
     // pass things through the pipeline

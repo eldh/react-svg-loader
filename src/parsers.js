@@ -62,7 +62,7 @@ export function convertRootToProps(xml) {
   let keys = Object.keys(o);
   keys.map(function(key) {
     if (key === 'style') return;
-    o[key] = `{'undefined' === typeof this.props['${key}'] ? ${JSON.stringify(o[key])} : this.props['${key}']}`;
+    o[key] = `{'undefined' === typeof props['${key}'] ? ${JSON.stringify(o[key])} : props['${key}']}`;
   });
   let proped = ' ' /*The space before the first attr*/ + keys.map(function(key) {
     return `${key}=${o[key]}`;
